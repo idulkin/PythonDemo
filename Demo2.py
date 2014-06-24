@@ -1,6 +1,10 @@
 import webapp2
 import re
-
+'''
+USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+PW_RE = re.compile(r"^.{3,20}$")
+EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$"
+'''
 form="""
 <form method="post">
     <b><font size="20">Signup</font></b>
@@ -38,6 +42,11 @@ form="""
 """
 
 class MainPage(webapp2.RequestHandler):
+
+    USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+    PW_RE = re.compile(r"^.{3,20}$")
+    EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$"
+
     def writeForm(self,username="",password="",vpassword="",email="",unError="",pwError="",valError="",emError=""):
         self.response.out.write(form %{"username": username,
 				       "password": password,
@@ -51,7 +60,15 @@ class MainPage(webapp2.RequestHandler):
 	self.writeForm()
     
     def post(self):
-        self.writeForm("That's a terrible username")
+        inUsername = self.request.get("username")
+        inPassword = self.request.get("password")
+        inValidation= self.request.get("vpassword")
+        inEmail= self.request.get("email")
+        
+        if(USER_RE.match(username)):
+            erUsername = "Invalid username"
+        
+        self.writeForm(inUsername,inPassword,inValidation,inEmail,erUsername)
 
 
 app = webapp2.WSGIApplication([
